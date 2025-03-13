@@ -19,7 +19,12 @@ export const useHospitals = ({ searchTerm, nearMe }: UseHospitalsProps = {}) => 
     try {
       const queryParams = new URLSearchParams(params).toString();
       const response = await fetch(
-        `https://feuxtstvjnsysirosxnu.supabase.co/functions/v1/get-hospitals?${queryParams}`
+        `https://feuxtstvjnsysirosxnu.supabase.co/functions/v1/get-hospitals?${queryParams}`,
+        {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZldXh0c3R2am5zeXNpcm9zeG51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxMjQ4MzAsImV4cCI6MjA1NTcwMDgzMH0.2mt3iNZ8og_ATWlNHKI_6siS2K_aRceay55kWswJP9Y`
+          }
+        }
       );
       
       if (!response.ok) {

@@ -1,4 +1,3 @@
-
 import { Hospital } from "@/types/hospital";
 import { MapPin, Phone, ExternalLink, Star } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -29,12 +28,15 @@ const HospitalCard = ({ hospital }: HospitalCardProps) => {
   };
 
   return (
-    <Card className="w-full mb-4 overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-white/80 backdrop-blur-sm border border-gray-100">
-      <div className="p-6">
-        <div className="flex justify-between items-start">
-          <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-1">{hospital.name}</h3>
-            <p className="text-sm text-gray-600 mb-2">{hospital.types.split(", ")[0]}</p>
+    <Card className="w-full overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-white/80 backdrop-blur-sm border border-gray-100">
+      <div className="p-4">
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-gray-900 mb-1">{hospital.name}</h3>
+            <div className="flex items-start gap-2 text-gray-600 mb-2">
+              <MapPin className="h-4 w-4 mt-1 flex-shrink-0" />
+              <p className="text-sm">{hospital.address}</p>
+            </div>
           </div>
           {hospital.rating !== "N/A" && (
             <div className="flex items-center bg-blue-50 px-2 py-1 rounded">
@@ -44,33 +46,24 @@ const HospitalCard = ({ hospital }: HospitalCardProps) => {
           )}
         </div>
 
-        <div className="flex items-start gap-2 text-gray-600 mb-4">
-          <MapPin className="h-4 w-4 mt-1 flex-shrink-0" />
-          <p className="text-sm">{hospital.address}</p>
-        </div>
-
-        {hospital.opening_hours && (
-          <p className="text-sm text-gray-600 mb-4">{hospital.opening_hours}</p>
-        )}
-
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2 mt-3">
           <Button
             variant="outline"
             size="sm"
-            className="flex items-center gap-2"
+            className="flex items-center gap-1"
             onClick={openGoogleMaps}
           >
-            <MapPin className="h-4 w-4" />
-            Directions
+            <MapPin className="h-3 w-3" />
+            Map
           </Button>
           {hospital.phone && (
             <Button
               variant="outline"
               size="sm"
-              className="flex items-center gap-2"
+              className="flex items-center gap-1"
               onClick={handleCall}
             >
-              <Phone className="h-4 w-4" />
+              <Phone className="h-3 w-3" />
               Call
             </Button>
           )}
@@ -78,11 +71,11 @@ const HospitalCard = ({ hospital }: HospitalCardProps) => {
             <Button
               variant="outline"
               size="sm"
-              className="flex items-center gap-2"
+              className="flex items-center gap-1"
               onClick={openWebsite}
             >
-              <ExternalLink className="h-4 w-4" />
-              Website
+              <ExternalLink className="h-3 w-3" />
+              Visit
             </Button>
           )}
         </div>

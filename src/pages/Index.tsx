@@ -1,18 +1,28 @@
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { hospitals } from "@/types/hospital";
 import SearchBar from "@/components/SearchBar";
 import HospitalCard from "@/components/HospitalCard";
+import { useHospitals } from "@/hooks/useHospitals";
+import { Button } from "@/components/ui/button";
+import { MapPin } from "lucide-react";
 
 const Index = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const { 
+    hospitals, 
+    isLoading, 
+    error, 
+    fetchHospitals, 
+    findHospitalsNearMe 
+  } = useHospitals();
 
-  const filteredHospitals = hospitals.filter((hospital) =>
-    hospital.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    hospital.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    hospital.types.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    fetchHospitals();
+  }, []);
+
+  const handleSearch = (term: string) => {
+    fetchHospitals({ search: term });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -40,15 +50,43 @@ const Index = () => {
           </div>
         </div>
 
-        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+        <div className="space-y-4 mb-8">
+          <SearchBar 
+            searchTerm="" 
+            onSearchChange={handleSearch} 
+          />
+          
+          <div className="flex justify-center">
+            <Button
+              onClick={findHospitalsNearMe}
+              className="flex items-center gap-2"
+              variant="outline"
+            >
+              <MapPin className="h-4 w-4" />
+              Hospitals Near Me
+            </Button>
+          </div>
+        </div>
+
+        {isLoading && (
+          <div className="text-center py-12">
+            <p className="text-gray-600">Loading hospitals...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="text-center py-12">
+            <p className="text-red-600">{error}</p>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 gap-4">
-          {filteredHospitals.map((hospital) => (
+          {hospitals.map((hospital) => (
             <HospitalCard key={hospital.id} hospital={hospital} />
           ))}
         </div>
 
-        {filteredHospitals.length === 0 && (
+        {!isLoading && !error && hospitals.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-600">No hospitals found matching your search criteria.</p>
           </div>

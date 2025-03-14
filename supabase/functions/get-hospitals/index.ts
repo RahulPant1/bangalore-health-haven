@@ -40,7 +40,7 @@ serve(async (req) => {
         *,
         earth_distance(
           ll_to_earth(${parseFloat(lat)}, ${parseFloat(lng)}),
-          ll_to_earth(lat::float8, lng::float8)
+          ll_to_earth(cast(latitude as float8), cast(longitude as float8))
         ) as distance
       `)
       .order('distance')

@@ -1,47 +1,16 @@
-
-// Array of hospital-related images from Unsplash
+// Array of India-specific hospital and doctor-related images from Unsplash
 export const hospitalImages = [
-  "https://images.unsplash.com/photo-1538108149393-fbbd81895907",
-  "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc",
-  "https://images.unsplash.com/photo-1586773860418-d37222d8fce3",
-  "https://images.unsplash.com/photo-1583324113626-70df0f4deaab",
-  "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d",
-  "https://images.unsplash.com/photo-1516549655169-df83a0774514",
-  "https://images.unsplash.com/photo-1578991624414-276ef23908bf",
-  "https://images.unsplash.com/photo-1504813184591-01572f98c85f",
-  "https://images.unsplash.com/photo-1581056771107-24ca5f033842",
-  "https://images.unsplash.com/photo-1626315869436-d6989fea3524",
-  "https://images.unsplash.com/photo-1559000357-f6b52ddfca37",
-  "https://images.unsplash.com/photo-1666214280557-f1b5022eb634",
-  "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133",
-  "https://images.unsplash.com/photo-1596541223130-5d31a73fb6c6",
-  "https://images.unsplash.com/photo-1537368910025-700350fe46c7",
-  "https://images.unsplash.com/photo-1579684385127-1ef15d508118",
-  "https://images.unsplash.com/photo-1516549655169-df83a0774514",
-  "https://images.unsplash.com/photo-1516549655169-df83a0774514",
-  "https://images.unsplash.com/photo-1504813184591-01572f98c85f",
-  "https://images.unsplash.com/photo-1504813184591-01572f98c85f",
-  "https://images.unsplash.com/photo-1538108149393-fbbd81895907",
-  "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc",
-  "https://images.unsplash.com/photo-1586773860418-d37222d8fce3",
-  "https://images.unsplash.com/photo-1583324113626-70df0f4deaab",
-  "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d",
-  "https://images.unsplash.com/photo-1516549655169-df83a0774514",
-  "https://images.unsplash.com/photo-1578991624414-276ef23908bf",
-  "https://images.unsplash.com/photo-1504813184591-01572f98c85f",
-  "https://images.unsplash.com/photo-1581056771107-24ca5f033842",
-  "https://images.unsplash.com/photo-1626315869436-d6989fea3524",
-  "https://images.unsplash.com/photo-1559000357-f6b52ddfca37",
-  "https://images.unsplash.com/photo-1666214280557-f1b5022eb634",
-  "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133",
-  "https://images.unsplash.com/photo-1596541223130-5d31a73fb6c6",
-  "https://images.unsplash.com/photo-1537368910025-700350fe46c7",
-  "https://images.unsplash.com/photo-1579684385127-1ef15d508118",
-  "https://images.unsplash.com/photo-1516549655169-df83a0774514",
-  "https://images.unsplash.com/photo-1516549655169-df83a0774514",
-  "https://images.unsplash.com/photo-1504813184591-01572f98c85f",
-  "https://images.unsplash.com/photo-1504813184591-01572f98c85f"
-].map(url => `${url}?auto=format&fit=crop&w=800&q=80`);
+  "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=800&q=80", // Indian hospital building
+  "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=800&q=80", // Indian medical team
+  "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=800&q=80", // Modern hospital in India
+  "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=800&q=80", // Indian doctor
+  "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80", // Hospital ward
+  "https://images.unsplash.com/photo-1504813184591-01572f98c85f?auto=format&fit=crop&w=800&q=80", // Medical consultation
+  "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=800&q=80", // Indian healthcare
+  "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=800&q=80", // Medical equipment
+  "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=800&q=80", // Indian medical staff
+  "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80"  // Hospital corridor
+].map(url => url);
 
 export const getRandomHospitalImage = () => {
   const randomIndex = Math.floor(Math.random() * hospitalImages.length);

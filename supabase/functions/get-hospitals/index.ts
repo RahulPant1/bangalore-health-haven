@@ -39,8 +39,8 @@ serve(async (req) => {
       query = query.select(`
         *,
         earth_distance(
-          ll_to_earth(${lat}, ${lng}),
-          ll_to_earth(cast(lat as float8), cast(lng as float8))
+          ll_to_earth(${parseFloat(lat)}, ${parseFloat(lng)}),
+          ll_to_earth(lat::float8, lng::float8)
         ) as distance
       `)
       .order('distance')

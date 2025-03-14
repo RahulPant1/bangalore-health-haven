@@ -1,7 +1,7 @@
-
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const blogPosts = [
   {
@@ -24,7 +24,15 @@ const Blog = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Healthcare Blog</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900">Healthcare Blog</h1>
+          <Link to="/">
+            <Button variant="outline" className="flex items-center gap-2">
+              <Home className="h-4 w-4" />
+              Back to Home
+            </Button>
+          </Link>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {blogPosts.map((post) => (
             <Link to={`/blog/${post.id}`} key={post.id}>

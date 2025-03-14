@@ -1,4 +1,6 @@
-
+import { Home } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
@@ -10,8 +12,15 @@ const FAQ = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <div className="max-w-3xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Frequently Asked Questions</h1>
-        
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900">Frequently Asked Questions</h1>
+          <Link to="/">
+            <Button variant="outline" className="flex items-center gap-2">
+              <Home className="h-4 w-4" />
+              Back to Home
+            </Button>
+          </Link>
+        </div>
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger>How do I find the nearest hospital?</AccordionTrigger>

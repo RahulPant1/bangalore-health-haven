@@ -1,8 +1,8 @@
-
 import { Hospital } from "@/types/hospital";
 import { MapPin, Phone, ExternalLink, Star } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { getRandomHospitalImage } from "@/utils/hospitalImages";
 
 interface HospitalCardProps {
   hospital: Hospital;
@@ -33,7 +33,7 @@ const HospitalCard = ({ hospital }: HospitalCardProps) => {
       <div className="flex">
         <div className="w-64 h-48 flex-shrink-0">
           <img
-            src="https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=800&q=80"
+            src={getRandomHospitalImage()}
             alt={hospital.name}
             className="w-full h-full object-cover"
           />

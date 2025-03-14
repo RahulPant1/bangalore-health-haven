@@ -8,7 +8,6 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
@@ -22,7 +21,6 @@ serve(async (req) => {
     const page = parseInt(url.searchParams.get('page') || '1')
     const limit = 20
 
-    // Create Supabase client
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
@@ -32,35 +30,31 @@ serve(async (req) => {
       .from('bangalore_hospitals')
       .select('*')
 
-    // Apply search filter if search term provided
     if (searchTerm) {
       query = query.ilike('name', `%${searchTerm}%`)
     }
 
-    // Apply location filter if coordinates provided
     if (lat && lng) {
-      const radiusInMeters = parseFloat(radius) * 1000 // Convert km to meters
+      const radiusInMeters = parseFloat(radius) * 1000
       query = query.select(`
         *,
-        ST_Distance(
-          location::geometry,
-          ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geometry
+        earth_distance(
+          ll_to_earth(${lat}, ${lng}),
+          ll_to_earth(cast(lat as float8), cast(lng as float8))
         ) as distance
       `)
-      .filter(`ST_DWithin(
-        location::geometry,
-        ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geometry,
-        ${radiusInMeters}
-      )`)
       .order('distance')
+      .lt('distance', radiusInMeters)
     }
 
-    // Apply pagination
     query = query.range((page - 1) * limit, page * limit - 1)
 
     const { data, error } = await query
 
-    if (error) throw error
+    if (error) {
+      console.error('Supabase query error:', error)
+      throw error
+    }
 
     return new Response(
       JSON.stringify(data),

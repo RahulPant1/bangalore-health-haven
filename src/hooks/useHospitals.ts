@@ -11,13 +11,20 @@ export const useHospitals = ({ searchTerm, nearMe }: UseHospitalsProps = {}) => 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  const fetchHospitals = async (params: Record<string, string> = {}) => {
+  const fetchHospitals = async (params: Record<string, string> = {}, reset = true) => {
     setIsLoading(true);
     setError(null);
     
     try {
-      const queryParams = new URLSearchParams(params).toString();
+      const currentPage = reset ? 1 : page;
+      const queryParams = new URLSearchParams({
+        ...params,
+        page: currentPage.toString()
+      }).toString();
+
       const response = await fetch(
         `https://feuxtstvjnsysirosxnu.supabase.co/functions/v1/get-hospitals?${queryParams}`,
         {
@@ -32,11 +39,23 @@ export const useHospitals = ({ searchTerm, nearMe }: UseHospitalsProps = {}) => 
       }
       
       const data = await response.json();
-      setHospitals(data);
+      if (reset) {
+        setHospitals(data);
+      } else {
+        setHospitals(prev => [...prev, ...data]);
+      }
+      setHasMore(data.length === 20);
+      setPage(currentPage + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch hospitals');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const loadMore = async () => {
+    if (!isLoading && hasMore) {
+      await fetchHospitals({}, false);
     }
   };
 
@@ -55,7 +74,7 @@ export const useHospitals = ({ searchTerm, nearMe }: UseHospitalsProps = {}) => 
       await fetchHospitals({ 
         lat: latitude.toString(), 
         lng: longitude.toString(),
-        radius: '10' 
+        radius: '10'
       });
     } catch (err) {
       setError('Failed to get your location. Please enable location services.');
@@ -67,6 +86,8 @@ export const useHospitals = ({ searchTerm, nearMe }: UseHospitalsProps = {}) => 
     isLoading,
     error,
     fetchHospitals,
-    findHospitalsNearMe
+    findHospitalsNearMe,
+    loadMore,
+    hasMore
   };
 };

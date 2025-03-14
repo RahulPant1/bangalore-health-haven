@@ -19,6 +19,8 @@ serve(async (req) => {
     const lat = url.searchParams.get('lat')
     const lng = url.searchParams.get('lng')
     const radius = url.searchParams.get('radius') || '10'
+    const page = parseInt(url.searchParams.get('page') || '1')
+    const limit = 20
 
     // Create Supabase client
     const supabaseClient = createClient(
@@ -37,17 +39,24 @@ serve(async (req) => {
 
     // Apply location filter if coordinates provided
     if (lat && lng) {
-      // Using PostGIS to calculate distance and filter within radius
-      query = query.select('*, ST_Distance(location, ST_SetSRID(ST_MakePoint($1, $2), 4326)) as distance', {
-        prepare: true,
-        parameters: [lng, lat]
-      })
-      .filter('ST_DWithin(location, ST_SetSRID(ST_MakePoint($1, $2), 4326), $3)', {
-        prepare: true,
-        parameters: [lng, lat, radius]
-      })
+      const radiusInMeters = parseFloat(radius) * 1000 // Convert km to meters
+      query = query.select(`
+        *,
+        ST_Distance(
+          location::geometry,
+          ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geometry
+        ) as distance
+      `)
+      .filter(`ST_DWithin(
+        location::geometry,
+        ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geometry,
+        ${radiusInMeters}
+      )`)
       .order('distance')
     }
+
+    // Apply pagination
+    query = query.range((page - 1) * limit, page * limit - 1)
 
     const { data, error } = await query
 
@@ -63,6 +72,7 @@ serve(async (req) => {
       }
     )
   } catch (error) {
+    console.error('Error:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       { 

@@ -1,5 +1,5 @@
 
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "@/components/SearchBar";
 import HospitalCard from "@/components/HospitalCard";
@@ -13,8 +13,25 @@ const Index = () => {
     isLoading, 
     error, 
     fetchHospitals, 
-    findHospitalsNearMe 
+    findHospitalsNearMe,
+    loadMore,
+    hasMore
   } = useHospitals();
+
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastHospitalElementRef = useCallback((node: HTMLDivElement | null) => {
+    if (isLoading) return;
+    
+    if (observer.current) observer.current.disconnect();
+    
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        loadMore();
+      }
+    });
+    
+    if (node) observer.current.observe(node);
+  }, [isLoading, hasMore, loadMore]);
 
   useEffect(() => {
     fetchHospitals();
@@ -68,7 +85,7 @@ const Index = () => {
           </div>
         </div>
 
-        {isLoading && (
+        {isLoading && hospitals.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-600">Loading hospitals...</p>
           </div>
@@ -81,10 +98,21 @@ const Index = () => {
         )}
 
         <div className="grid grid-cols-1 gap-4">
-          {hospitals.map((hospital) => (
-            <HospitalCard key={hospital.id} hospital={hospital} />
+          {hospitals.map((hospital, index) => (
+            <div
+              key={hospital.id}
+              ref={index === hospitals.length - 1 ? lastHospitalElementRef : null}
+            >
+              <HospitalCard hospital={hospital} />
+            </div>
           ))}
         </div>
+
+        {isLoading && hospitals.length > 0 && (
+          <div className="text-center py-4">
+            <p className="text-gray-600">Loading more hospitals...</p>
+          </div>
+        )}
 
         {!isLoading && !error && hospitals.length === 0 && (
           <div className="text-center py-12">

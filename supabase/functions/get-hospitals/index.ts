@@ -1,4 +1,3 @@
-
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -45,6 +44,10 @@ serve(async (req) => {
       `)
       .order('distance')
       .lt('distance', radiusInMeters)
+    } else {
+      // Default sorting by rating when location is not available
+      query = query.select('*, cast(rating as float8) as rating_num')
+        .order('rating_num', { ascending: false, nullsLast: true })
     }
 
     query = query.range((page - 1) * limit, page * limit - 1)

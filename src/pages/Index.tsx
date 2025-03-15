@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "@/components/SearchBar";
@@ -47,7 +46,7 @@ const Index = () => {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-4 mb-6">
             <img
-              src="https://images.unsplash.com/photo-1606293926075-91acedc891cc?auto=format&fit=crop&w=200&q=80"
+              src="/assets/images/bangalore-left.jpg"
               alt="Bangalore cityscape left"
               className="w-24 h-24 object-cover rounded-lg"
             />
@@ -55,13 +54,13 @@ const Index = () => {
               Bangalore Hospitals & Clinics Directory
             </h1>
             <img
-              src="https://images.unsplash.com/photo-1582719472380-c5862b6f3480?auto=format&fit=crop&w=200&q=80"
+              src="/assets/images/bangalore-right.jpg"
               alt="Bangalore cityscape right"
               className="w-24 h-24 object-cover rounded-lg"
             />
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-4">
-            Find the best healthcare facilities in Bangalore with detailed information, ratings, and directions.
+            Healthcare facilities in Bangalore at your fingertips.
           </p>
           <div className="flex justify-center gap-4">
             <Link

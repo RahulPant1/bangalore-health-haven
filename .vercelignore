@@ -1,2 +1,4 @@
 # Ignore a whole directory
 data_generation_codes
+
+requirements.txt
